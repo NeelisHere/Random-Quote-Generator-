@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding:0;
+        box-sizing: border-box;
+    }
+    body{
+        border:2px solid green;
+    }
+    .box{
+        border:2px solid red;
+    }
+    .quote{
+        border:2px solid blue;
+    }
+</style>
+<body>
+    <div class="box">
+        <div class="quote"></div>
+        <button class="next btn">Change</button>
+        <button class="tweet btn">Tweet</button>
+    </div>
+</body>
+</html>
+
+<script>
+    let nxtQuote=document.querySelector('.box .next');
+    nxtQuote.addEventListener('click',()=>{
+        let xhr=new XMLHttpRequest();
+        let api_url='https://type.fit/api/quotes';
+        xhr.open('GET',api_url,true)
+        xhr.onload=function(){
+            if(this.status==200){
+                let txt=JSON.parse(this.responseText);
+                let index=Math.floor(Math.random()*txt.length)
+                let new_quote=txt[index].text;
+                let author=(!txt[index].author?'Anonymus':txt[index].author);
+                document.querySelector('.box .quote').innerHTML=
+                                `<h2>"${new_quote}"</h2>
+                                <br>
+                                <h3>-${author}</h3>`;
+            }
+        }
+        xhr.send();
+    })
+    let tweet=document.querySelector('.box .tweet');
+    tweet.addEventListener('click',()=>{
+        location.href='https://www.google.com';
+    })
+</script>
